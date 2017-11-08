@@ -14,6 +14,8 @@ platforms:
       provision_command:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable sshd.service
+        - yum install epel-release -y
+        - yum install https://centos7.iuscommunity.org/ius-release.rpm -y
         - curl -LO https://omnitruck.chef.io/install.sh && sudo bash ./install.sh -v 13.1.31 && rm install.sh
 
   - name: centos-7-chef-12
@@ -25,6 +27,8 @@ platforms:
       provision_command:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable sshd.service
+        - yum install epel-release -y
+        - yum install https://centos7.iuscommunity.org/ius-release.rpm -y
         - curl -LO https://omnitruck.chef.io/install.sh && sudo bash ./install.sh -v 12.7.2 && rm install.sh
 
   - name: centos-68
@@ -33,6 +37,8 @@ platforms:
       image: centos:6.8
       privileged: true
       provision_command:
+        - yum install epel-release -y
+        - yum install https://centos6.iuscommunity.org/ius-release.rpm -y
         - curl -LO https://omnitruck.chef.io/install.sh && sudo bash ./install.sh -v 13.1.31 && rm install.sh
 
   - name: centos-69
@@ -41,6 +47,8 @@ platforms:
       image: centos:6.9
       privileged: true
       provision_command:
+        - yum install epel-release -y
+        - yum install https://centos6.iuscommunity.org/ius-release.rpm -y
         - curl -LO https://omnitruck.chef.io/install.sh && sudo bash ./install.sh -v 13.1.31 && rm install.sh
 
   - name: centos-69-chef-12

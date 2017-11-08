@@ -11,7 +11,7 @@ source_url 'https://github.com/usemarkup/chef-redis'
 
 supports 'centos'
 
-chef_version '>= 12.7' if respond_to?(:chef_version)
+chef_version '>= 12.6' if respond_to?(:chef_version)
 
 depends 'compat_resource'
 depends 'redisio', '~> 2.6'

@@ -14,16 +14,16 @@ An example setup with 3x redis daemons, the standard redis-server, redis-session
   "servers": {
     "server": {
       "port": 6379,
-      "maxmemory" => "512m"
+      "maxmemory": "512m"
     },
     "sessions": {
       "port": 5000,
-      "maxmemory" => "256mb"
+      "maxmemory": "256mb"
     },
     "cache": {
       "port": 5001,
-      "maxmemory" => "1024mb",
-      "maxmemorypolicy"
+      "maxmemory": "1024mb",
+      "maxmemorypolicy": "allkeys-lru"
     }
   }
 }
@@ -45,9 +45,9 @@ You could use https://github.com/chef-cookbooks/yum-ius
 ## Support
 
 - CentOS 6.x
-- CentOS 7.x
+- CentOS 7.x (coming soon)
 
 ### Chef Support (tested)
 
 - Chef 12.7+
-- Chef 13.1
+- Chef 13.1 (coming soon, once tagged)
