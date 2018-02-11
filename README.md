@@ -1,5 +1,7 @@
 # Redis Omnibus
 
+[![Build Status](https://travis-ci.org/usemarkup/chef-redis.svg?branch=master)](https://travis-ci.org/usemarkup/chef-redis)
+
 Installs redis 3.2.x using the cookbook https://github.com/brianbianco/redisio for CentOS and removes the default
 package startups and configuration.
 
