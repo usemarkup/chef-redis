@@ -15,17 +15,19 @@ describe 'runtime is available' do
 end
 
 describe 'redis has 333mb of max memory' do
-  it 'has php' do
+  it 'has memory configured' do
     expect(command('redis-cli info | grep maxmemory_human | grep "maxmemory_human:333.00M"').exit_status).to eq(0)
   end
 end
 
-describe port(6379) do
-  it { should be_listening }
-  its('processes') { should include 'redis-server' }
+describe '5001 pong' do
+  it 'redis is listening on 5001 and ping/pong works' do
+    expect(command('redis-cli -p 5001 ping | grep PONG').exit_status).to eq(0)
+  end
 end
 
-describe port(5001) do
-  it { should be_listening }
-  its('processes') { should include 'redis-server' }
+describe '6379 pong' do
+  it 'redis is listening on 6379 and ping/pong works' do
+    expect(command('redis-cli -p 6379 ping | grep PONG').exit_status).to eq(0)
+  end
 end
