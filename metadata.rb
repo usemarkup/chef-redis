@@ -14,4 +14,4 @@ supports 'centos'
 chef_version '>= 12.6' if respond_to?(:chef_version)
 
 depends 'compat_resource'
-depends 'redisio'
+depends 'ulimit', '>= 0.1.2'

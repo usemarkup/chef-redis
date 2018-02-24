@@ -1,28 +1,59 @@
-node.default['redisio']['package_install'] = true
-
-# i.e. the latest Redis 3.2.x
-node.default['redisio']['package_name'] = 'redis32u'
-node.default['redisio']['version'] = nil
-node.default['redisio']['bin_path'] = '/usr/bin/'
+include_recipe 'ulimit::default'
 
 # Save once every 15mins
-node.default['redisio']['default_settings']['save'] = ['900 1']
-node.default['redisio']['default_settings']['maxmemory'] = nil
+node.default['redis-omnibus']['default_settings']['save'] = ['900 1']
+node.default['redis-omnibus']['default_settings']['maxmemory'] = nil
 
-# This cookbook does not make use of redis-sentinel currently
-node.default['redisio']['default_settings']['breadcrumb'] = false
+package node['redis-omnibus']['package']
 
-servers = []
+include_recipe 'redis-omnibus::remove_package_installer_files'
 
+servers = {}
+
+# Apply the defaults
 node['redis-omnibus']['servers'].each do |name, server_options|
-  servers.push(
-    Chef::Mixin::DeepMerge.hash_only_merge({ 'name' => "-#{name}" }, server_options)
-  )
+  servers[name] = Chef::Mixin::DeepMerge.hash_only_merge(server_options, node['redis-omnibus']['default_settings'])
 end
 
-node.default['redisio']['servers'] = servers
+directory '/etc/redis' do
+action :create
+end
 
-include_recipe 'redisio::install'
-include_recipe 'redis-omnibus::remove_package_installer_files'
-include_recipe 'redisio::configure'
-include_recipe 'redisio::enable'
+servers.each do |name, server_options|
+  user_ulimit server_options['user'] do
+    filehandle_limit server_options['maxclients']
+  end
+
+  # Write systemd file (if required)
+  template "/usr/lib/systemd/system/#{name}-server.service" do
+    source 'redis.service.erb'
+    variables(
+      name: name,
+      bin_path: '/usr/bin',
+      limit_nofile: server_options['maxclients'],
+      user: server_options['user'],
+      group: server_options['group']
+    )
+    only_if { node['init_package'] == 'systemd' }
+  end
+
+  # Write init.d file (if required)
+  template "/etc/init.d/#{name}-server" do
+    source 'redis.init.erb'
+    variables Chef::Mixin::DeepMerge.hash_only_merge({ name: name, bin_path: '/usr/bin' }, server_options)
+    only_if { node['init_package'] == 'initd' }
+  end
+
+  # Write redis conf
+  template "/etc/redis/#{name}.conf" do
+    source 'redis.conf.erb'
+    variables Chef::Mixin::DeepMerge.hash_only_merge({ name: name, version: node['redis-omnibus']['version'] }, server_options)
+  end
+end
+
+#node.default['redisio']['servers'] = servers
+
+#include_recipe 'redisio::install'
+#
+#include_recipe 'redisio::configure'
+#include_recipe 'redisio::enable'
