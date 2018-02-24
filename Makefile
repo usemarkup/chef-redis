@@ -4,6 +4,11 @@ default: all;
 install:
 	gem install bundler
 
+clean:
+	rm -rf vendor/
+	rm -rf Berksfile.lock
+	rm -rf Gemfile.lock
+
 bundle:
 	bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --retry=3
 
