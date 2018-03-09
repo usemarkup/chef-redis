@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/usemarkup/chef-redis.svg?branch=master)](https://travis-ci.org/usemarkup/chef-redis)
 
-Installs redis 3.2.x using the cookbook https://github.com/brianbianco/redisio for CentOS and removes the default
+Installs redis 3.2.x for CentOS and removes the default
 package startups and configuration.
 
 *Note*: This cookbook does not make use of redis sentinel
@@ -14,7 +14,7 @@ An example setup with 3x redis daemons, the standard redis-server, redis-session
 ```json
 "redis-omnibus": {
   "servers": {
-    "server": {
+    "redis": {
       "port": 6379,
       "maxmemory": "512m"
     },
@@ -47,9 +47,9 @@ You could use https://github.com/chef-cookbooks/yum-ius
 ## Support
 
 - CentOS 6.x
-- CentOS 7.x (coming soon)
+- CentOS 7.x
 
 ### Chef Support (tested)
 
 - Chef 12.7+
-- Chef 13.x (see https://github.com/brianbianco/redisio/issues/353)
+- Chef 13.x
