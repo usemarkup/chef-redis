@@ -1,5 +1,4 @@
 include_recipe 'ulimit::default'
-include_recipe 'selinux::disabled'
 
 # Save once every 15mins
 node.default['redis-omnibus']['default_settings']['save'] = ['900 1']
