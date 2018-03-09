@@ -1,7 +1,7 @@
 default['redis-omnibus']['version'] = {
-    'major' => 3,
-    'minor' => 2,
-    'patch' => 11,
+  'major' => 3,
+  'minor' => 2,
+  'patch' => 11,
 }
 default['redis-omnibus']['package'] = 'redis32u'
 
@@ -16,6 +16,7 @@ default['redis-omnibus']['default_settings'] = {
   'user'                    => 'redis',
   'group'                   => 'redis',
   'homedir'                 => '/var/lib/redis',
+  'piddir'                  => '/var/run/redis',
   'shell'                   => '/usr/bin/',
   'systemuser'              => true,
   'uid'                     => nil,

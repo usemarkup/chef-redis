@@ -5,34 +5,27 @@
 #
 # description: Redis is an in memory key-value store database
 #
+### BEGIN INIT INFO
+# Provides: redis6379
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Required-Start:
+# Required-Stop:
+# Description: redis6379 init script
+### END INIT INFO
 
 REDISNAME=<%= @name %>
 REDISPORT=<%= @port %>
-<% case @platform %>
-<% when 'ubuntu','debian','fedora' %>
-EXEC="su -s /bin/sh -c '<%= File.join(@bin_path, 'redis-server') %> <%= @configdir %>/${REDISNAME}.conf' <%= @user %>"
-<% else %>
-EXEC="runuser <%= @user %> -c \"<%= File.join(@bin_path, 'redis-server') %> <%= @configdir %>/${REDISNAME}.conf\""
-<% end %>
-CLIEXEC=<%= File.join(@bin_path, 'redis-cli') %>
-
-<% connection_string = String.new %>
-<% if @unixsocket.nil? %>
-  <% connection_string << " -p #{@port}" %>
-  <% connection_string << " -h #{@address.respond_to?(:first) ? @address.first : @address }" if @address %>
-<% else %>
-  <% connection_string << " -s #{@unixsocket}" %>
-<% end %>
-<% connection_string  << " -a '#{@requirepass}'" unless @requirepass.nil? %>
+EXEC="runuser <%= @user %> -c \"<%= File.join(@bin_path, 'redis-server') %> <%= @configdir %>/${REDISNAME}.conf --daemonize yes\""
+CLIEXEC=<%= @bin_path %>/redis-cli
 
 PIDFILE=<%= @piddir %>/redis_${REDISNAME}.pid
-
 if [ ! -d <%= @piddir %> ]; then
     mkdir -p <%= @piddir %>
     chown <%= @user %>  <%= @piddir %>
 fi
 
-ulimit -n <%= @ulimit %>
+ulimit -n 10032
 
 case "$1" in
     status)
@@ -50,14 +43,6 @@ case "$1" in
         if [ -f $PIDFILE ]
         then
                 echo "$PIDFILE exists, process is already running or crashed"
-		PIDNUM=`cat $PIDFILE`
-		PROCESS_RUNNING=`ps --no-headers -q $PIDNUM | wc -l`
-		if [ ! $PROCESS_RUNNING -eq 1 ]
-		then
-			echo "The PID doesn't exists, restarting it."
-			rm $PIDFILE
-			eval $EXEC
-		fi
         else
                 echo "Starting Redis server..."
                 eval $EXEC
@@ -71,8 +56,8 @@ case "$1" in
                 PID=$(cat $PIDFILE)
                 echo "Stopping ..."
 
-                <%= "$CLIEXEC #{connection_string} save" if @shutdown_save %>
-                $CLIEXEC <%= connection_string %> shutdown
+
+                $CLIEXEC  -p 6379 shutdown
 
                 while [ -x /proc/${PID} ]
                 do
