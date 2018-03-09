@@ -52,4 +52,4 @@ You could use https://github.com/chef-cookbooks/yum-ius
 ### Chef Support (tested)
 
 - Chef 12.7+
-- Chef 13.1 (coming soon, once tagged)
+- Chef 13.x (see https://github.com/brianbianco/redisio/issues/353)
