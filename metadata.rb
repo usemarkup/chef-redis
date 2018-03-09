@@ -2,7 +2,7 @@ name 'redis-omnibus'
 license 'MIT Licence'
 description 'Installs Redis with redisio'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.0.2'
+version          '2.0.0'
 
 maintainer 'Gavin Staniforth'
 maintainer_email 'gavin@usemarkup.com'
