@@ -31,6 +31,15 @@ servers.each do |name, server_options|
     filehandle_limit server_options['maxclients'] + 32
   end
 
+  # Create the Pid folder (if required)
+  directory server_options['piddir'] do
+    owner server_options['user']
+    group server_options['group']
+    mode '0755'
+    recursive true
+    action :create
+  end
+
   # Write systemd file (if required)
   template "/usr/lib/systemd/system/#{name}-server.service" do
     source 'redis.service.erb'
