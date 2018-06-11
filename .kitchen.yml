@@ -11,6 +11,7 @@ platforms:
       image: centos/systemd
       run_command: /usr/sbin/init
       privileged: true
+      deprecations_as_errors: true
       provision_command:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable sshd.service
@@ -24,6 +25,7 @@ platforms:
       image: centos/systemd
       run_command: /usr/sbin/init
       privileged: true
+      deprecations_as_errors: true
       provision_command:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable sshd.service
