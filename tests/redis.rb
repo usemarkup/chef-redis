@@ -1,4 +1,4 @@
-describe package('redis32u') do
+describe package('redis') do
   it { should be_installed }
 end
 
