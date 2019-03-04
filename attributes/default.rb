@@ -3,7 +3,7 @@ default['redis-omnibus']['version'] = {
   'minor' => 2,
   'patch' => 11,
 }
-default['redis-omnibus']['package'] = 'redis32u'
+default['redis-omnibus']['package'] = 'redis40u'
 
 # default redis-server install
 default['redis-omnibus']['servers'] = {
