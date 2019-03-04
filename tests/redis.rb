@@ -1,7 +1,3 @@
-describe package('redis32u') do
-  it { should be_installed }
-end
-
 describe service('redis-server') do
   it { should be_installed }
   it { should be_enabled }
